@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/amritasrc/url-shortener#readme",
   "dependencies": {
+    "ejs": "^6.0.1",
     "express": "^5.2.1",
     "mongoose": "^9.9.4",
     "nanoid": "^6.0.1",
