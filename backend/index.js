@@ -10,10 +10,7 @@ const PORT = 8001;
 
 connectToMongoDB('mongodb://127.0.0.1:27017/short-url')
     .then(() => console.log("MongoDB connected!"))
-    .catch(() => console.error("An error occured."));
-
-app.set('view engine', "ejs");
-app.set('views', path.resolve('./views'));
+    .catch((error) => console.error("MongoDB connection error:", error));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
