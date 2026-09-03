@@ -5,11 +5,10 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+
   resolve: {
     alias: {
-      alias: {
-        '@': path.resolve(import.meta.dirname, './src'),
-      }
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
 

@@ -1,8 +1,10 @@
-import React from 'react'
+import UrlShortener from './components/UrlShortener'
 
-const App = () => {
+function App() {
   return (
-    <div className='bg-red-500'>App</div>
+    <main className="flex min-h-screen items-center justify-center p-6">
+      <UrlShortener />
+    </main>
   )
 }
 
