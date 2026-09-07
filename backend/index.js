@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
-const { connectToMongoDB } = require('./connect')
+const { connectToMongoDB } = require('./connect');
 const urlRoute = require('./routes/url');
-const staticRouter = require('./routes/staticRouter')
+const staticRouter = require('./routes/staticRouter');
+const cors = require('cors');
 
 const URL = require('./models/url')
 const app = express();
@@ -14,6 +15,10 @@ connectToMongoDB('mongodb://127.0.0.1:27017/short-url')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
 
 app.use("/url", urlRoute);
 app.use("/", staticRouter);
