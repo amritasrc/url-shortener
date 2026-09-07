@@ -16,6 +16,11 @@ const UrlShortener = () => {
         setLoading(true);
         setError('');
 
+        if (!url.trim()) {
+            setError("Please enter a URL.");
+            return;
+        }
+
         try {
             const response = await axios.post(
                 'http://localhost:8001/url',
