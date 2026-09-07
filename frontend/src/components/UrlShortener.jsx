@@ -22,8 +22,6 @@ const UrlShortener = () => {
                 { url }
             );
 
-            console.log(response.data);
-
             setShortUrl(`http://localhost:8001/${response.data.shortId}`);
         } catch (error) {
             console.error(error);
