@@ -71,7 +71,7 @@ const UrlShortener = () => {
                     </p>
                     <div className="flex items-center justify-between gap-3 p-3 bg-zinc-50 rounded-xl border border-zinc-200">
                         <span className="text-sm font-medium text-black">
-                            https://short.link/x8k2p
+                           {shortUrl}
                         </span>
                         <button
                             type="button"
