@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 
 const UrlShortener = () => {
 
-    const [url, setUrl] = useState('');
+    const [url, setUrl] = useState('https://github.com/amritasrc');
     const [shortUrl, setShortUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -11,14 +12,33 @@ const UrlShortener = () => {
 
     }
 
-    const handleSubmit = async () => {
-        const axios = await axios.post('/')
+    const handleSubmit = async (e) => {
+
+        setLoading(true);
+        setError('');
+
+        try {
+            const response = await axios.post(
+                'http://localhost:3000/url',
+                { url }
+            );
+
+            console.log(response.data);
+            setShortUrl(response.data.shortUrl);
+
+        } catch (error) {
+            console.error(error);
+            setError('Something went wrong.');
+        } finally {
+            setLoading(false);
+        }
+
     }
 
     return (
         <div className="w-full max-w-lg bg-[url('/form-bg.jpg')] bg-cover bg-no-repeat rounded-xl shadow-lg">
 
-            <div className='bg-white/45 rounded-xl p-8 '>
+            <div className='bg-white/60 rounded-xl p-8 '>
                 {/* Header */}
                 <div className="mb-6">
                     <h1 className="text-xl font-bold text-zinc-900">URL Shortener</h1>
@@ -36,7 +56,7 @@ const UrlShortener = () => {
                             className="flex-1 px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-800 text-sm placeholder-zinc-400 focus:outline-none focus:bg-white focus:border-zinc-600 focus:ring-2 focus:ring-zinc-100 transition"
                         />
                         <button
-                            type="button"
+                            type="submit"
                             className="px-6 py-3 bg-black text-white font-medium text-sm rounded-xl transition cursor-pointer"
                         >
                             Shorten
