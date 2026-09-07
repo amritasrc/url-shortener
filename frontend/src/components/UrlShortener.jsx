@@ -3,29 +3,28 @@ import axios from 'axios';
 
 const UrlShortener = () => {
 
-    const [url, setUrl] = useState('https://github.com/amritasrc');
+    const [url, setUrl] = useState('');
     const [shortUrl, setShortUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
-    const handleSetUrl = () => {
-
-    }
+    const [copied, setCopied] = useState(false);
 
     const handleSubmit = async (e) => {
+
+        e.preventDefault();
 
         setLoading(true);
         setError('');
 
         try {
             const response = await axios.post(
-                'http://localhost:3000/url',
+                'http://localhost:8001/url',
                 { url }
             );
 
             console.log(response.data);
-            setShortUrl(response.data.shortUrl);
 
+            setShortUrl(`http://localhost:8001/${response.data.shortId}`);
         } catch (error) {
             console.error(error);
             setError('Something went wrong.');
@@ -34,6 +33,15 @@ const UrlShortener = () => {
         }
 
     }
+
+    const handleCopy = async () => {
+        await navigator.clipboard.writeText(shortUrl);
+        setCopied(true);
+
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
+    };
 
     return (
         <div className="w-full max-w-lg bg-[url('/form-bg.jpg')] bg-cover bg-no-repeat rounded-xl shadow-lg">
@@ -52,35 +60,49 @@ const UrlShortener = () => {
                             type="url"
                             placeholder="https://example.com/longUrl..."
                             value={url}
-                            onInput={(e) => setUrl(e.target.value)}
+                            onChange={(e) => setUrl(e.target.value)}
                             className="flex-1 px-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-800 text-sm placeholder-zinc-400 focus:outline-none focus:bg-white focus:border-zinc-600 focus:ring-2 focus:ring-zinc-100 transition"
                         />
                         <button
                             type="submit"
+                            disabled={loading}
                             className="px-6 py-3 bg-black text-white font-medium text-sm rounded-xl transition cursor-pointer"
                         >
-                            Shorten
+                            {loading ? "Shortening..." : "Shorten"}
                         </button>
                     </div>
                 </form>
 
                 {/* Shortened URL Output Box */}
-                <div className="mt-6 pt-6 border-t border-black">
-                    <p className="text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-2">
-                        Shortened Link
-                    </p>
-                    <div className="flex items-center justify-between gap-3 p-3 bg-zinc-50 rounded-xl border border-zinc-200">
-                        <span className="text-sm font-medium text-black">
-                           {shortUrl}
-                        </span>
-                        <button
-                            type="button"
-                            className="px-3 py-1.5 bg-white text-black hover:bg-zinc-100 font-medium text-xs rounded-lg border border-zinc-200 transition shrink-0 cursor-pointer"
-                        >
-                            Copy
-                        </button>
+                {shortUrl && (
+                    <div className="mt-6 pt-6 border-t border-black">
+                        <p className="text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-2">
+                            Shortened Link
+                        </p>
+
+                        <div className="flex items-center justify-between gap-3 p-3 bg-zinc-50 rounded-xl border border-zinc-200">
+                            <a className="text-sm font-medium text-black underline pb-1"
+                                href={shortUrl}
+                                target='_blank'>
+                                {shortUrl}
+                            </a>
+
+                            <button
+                                type="button"
+                                onClick={handleCopy}
+                                className="px-3 py-1.5 bg-white text-black hover:bg-zinc-100 font-medium text-xs rounded-lg border border-zinc-200 transition shrink-0 cursor-pointer"
+                            >
+                                {copied ? "Copied!" : "Copy"}
+                            </button>
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {error && (
+                    <p className="mt-2 text-red-600 font-semibold">
+                        {error}
+                    </p>
+                )}
             </div>
 
         </div>

@@ -21,9 +21,8 @@ app.use(cors({
 }));
 
 app.use("/url", urlRoute);
-app.use("/", staticRouter);
 
-app.get('/url/:shortId', async (req, res) => {
+app.get('/:shortId', async (req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate({
         shortId
@@ -43,6 +42,12 @@ app.get('/url/:shortId', async (req, res) => {
 
     res.redirect(entry.redirectURL);
 });
+
+app.use("/", staticRouter);
+
+
+
+
 
 app.listen(PORT, () => {
     console.log(`Server started at PORT: http://localhost:${PORT} `);
