@@ -33,12 +33,16 @@ const UrlShortener = () => {
     }
 
     const handleCopy = async () => {
-        await navigator.clipboard.writeText(shortUrl);
-        setCopied(true);
+        try {
+            await navigator.clipboard.writeText(shortUrl);
+            setCopied(true);
 
-        setTimeout(() => {
-            setCopied(false);
-        }, 2000);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        } catch (error) {
+            setError("Failed to copy URL.");
+        }
     };
 
     return (
